@@ -40,11 +40,11 @@ jobs:
         runs-on: ubuntu-latest
         steps:
         - name: Checkout Repository
-          uses: actions/setup-node@v4          
+          uses: actions/checkout@v4         
         - name: setup NodeJS of version 18
           uses: actions/setup-node@v4
           with:
-            node-version: 20
+            node-version: 18
         - name: install nodejs dependencies
           run: npm install
         - name:  execute code coverage code
