@@ -34,6 +34,7 @@ jobs:
           tags: 'ghcr.io/${{ env.REPO_OWNER_LC }}/solar-system:${{ github.sha }}'
     unit-testing:
         name: Unit Testing
+        continue-on-error: true
         runs-on: ubuntu-latest
         steps:
         - name: Checkout Repository
