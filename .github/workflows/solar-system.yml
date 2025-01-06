@@ -102,6 +102,25 @@ jobs:
           kubeconfig: '${{ secrets.KUBECONFIG }}'
       - name: to verify Step 2 and 3
         run: kubectl version --short -o yaml
+      - name: fetch the nginx ingress controller ip
+        run: >
+          echo "INGRESS_IP=$(kubectl -n ingress-nginx get services
+          ingress-nginx-controller -o
+          jsonpath='{.status.loadBalancer.ingress[0].ip}')" >> $GITHUB_ENV
+      - name: replace ingress nginx ip in kubernetes/development files
+        uses: cschleiden/replace-tokens@v1
+        with:
+           tokenPrefix: '_{_'
+           tokenSuffix: '_}_'
+           files: '["kubernetes/development/*.yaml"]'
+        env:
+          NAMESPACE: '${{ vars.NAMESPACE }}'
+          REPLICAS: '${{ vars.REPLICAS }}'
+          IMAGE: >-
+            ghcr.io/${{ github.repository_owner }}/solar-system:${{ github.sha
+            }} 
+          INGRESS_IP: '${{ vars.INGRESS_IP }}'
+      - run: cat kubernetes/development/*.yaml
 
           
         
